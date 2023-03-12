@@ -1,3 +1,3 @@
-export const at = (query: string): string => {
-    return `Test: ${query}`
+export const media = (query: string): string => {
+    return ''
 }
