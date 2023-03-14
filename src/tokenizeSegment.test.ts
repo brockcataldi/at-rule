@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import { tokenizeSegment } from './tokenizeSegment'
+import tokenizeSegment from './tokenizeSegment'
 
 describe('tokenizeSegment', () => {
     test('tokenizeSegment: Empty String', () => {
@@ -14,8 +14,16 @@ describe('tokenizeSegment', () => {
     })
 
     test('tokenizeSegment: Shorthand', () => {
-        expect(tokenizeSegment('dark')).toStrictEqual({ property: 'prefers-color-scheme', operator: ':', value: 'dark' })
-        expect(tokenizeSegment('hover')).toStrictEqual({ property: 'hover', operator: ':', value: 'hover' })
+        expect(tokenizeSegment('dark')).toStrictEqual({
+            property: 'prefers-color-scheme',
+            operator: ':',
+            value: 'dark',
+        })
+        expect(tokenizeSegment('hover')).toStrictEqual({
+            property: 'hover',
+            operator: ':',
+            value: 'hover',
+        })
     })
 
     test('tokenizeSegment: Width Defaulted Shorthand', () => {
@@ -92,7 +100,7 @@ describe('tokenizeSegment', () => {
         expect(tokenizeSegment('200px < width > 1000px')).toStrictEqual({
             property: 'width',
             operator: ['<', '>'],
-            value: ['200px', '1000px']
+            value: ['200px', '1000px'],
         })
     })
 })
