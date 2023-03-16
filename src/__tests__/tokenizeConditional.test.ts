@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
 
-import tokenizeConditional from './tokenizeConditional'
+import tokenizeConditional from '../tokenizeMediaConditional'
 
 describe('tokenizeConditional', () => {
     test('tokenizeConditional: Empty String', () => {
@@ -15,8 +15,14 @@ describe('tokenizeConditional', () => {
     })
 
     test('tokenizeConditional: Media Type and Shorthand', () => {
-        expect(tokenizeConditional('=screen')).toStrictEqual({ modifier: '=', segments: [{ type: 'screen' }] })
-        expect(tokenizeConditional('!print')).toStrictEqual({ modifier: '!', segments: [{ type: 'print' }] })
+        expect(tokenizeConditional('=screen')).toStrictEqual({
+            modifier: '=',
+            segments: [{ type: 'screen' }],
+        })
+        expect(tokenizeConditional('!print')).toStrictEqual({
+            modifier: '!',
+            segments: [{ type: 'print' }],
+        })
     })
 
     test('tokenizeConditional: Media Type and Shorthand', () => {

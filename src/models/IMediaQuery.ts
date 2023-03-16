@@ -1,6 +1,6 @@
 import { IMediaConditional } from './IMediaConditional'
 
 interface IMediaQuery {
-    query: IMediaConditional[]
+    conditions: IMediaConditional[]
 }
 export type { IMediaQuery }

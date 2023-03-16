@@ -1,5 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
-import tokenizeSegment from './tokenizeSegment'
+
+import tokenizeSegment from '../tokenizeMediaSegment'
 
 describe('tokenizeSegment', () => {
     test('tokenizeSegment: Empty String', () => {
