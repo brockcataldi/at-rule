@@ -1,3 +1,4 @@
 # At
 
-A shorthand parser for @media (and hopefully @container) 
+A shorthand parser for @media (and @container in the future) 
+

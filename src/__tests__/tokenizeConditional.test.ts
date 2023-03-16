@@ -1,45 +1,45 @@
 import { describe, expect, test } from '@jest/globals'
 
-import tokenizeConditional from '../tokenizeMediaConditional'
+import { tokenizeMediaConditional } from '../tokenizeMediaQuery'
 
-describe('tokenizeConditional', () => {
-    test('tokenizeConditional: Empty String', () => {
-        expect(tokenizeConditional('')).toStrictEqual({ segments: [] })
-        expect(tokenizeConditional(' ')).toStrictEqual({ segments: [] })
+describe('tokenizeMediaConditional', () => {
+    test('tokenizeMediaConditional: Empty String', () => {
+        expect(tokenizeMediaConditional('')).toStrictEqual({ segments: [] })
+        expect(tokenizeMediaConditional(' ')).toStrictEqual({ segments: [] })
     })
 
-    test('tokenizeConditional: Media Type', () => {
-        expect(tokenizeConditional('screen')).toStrictEqual({ segments: [{ type: 'screen' }] })
-        expect(tokenizeConditional('print')).toStrictEqual({ segments: [{ type: 'print' }] })
-        expect(tokenizeConditional('all')).toStrictEqual({ segments: [{ type: 'all' }] })
+    test('tokenizeMediaConditional: Media Type', () => {
+        expect(tokenizeMediaConditional('screen')).toStrictEqual({ segments: [{ type: 'screen' }] })
+        expect(tokenizeMediaConditional('print')).toStrictEqual({ segments: [{ type: 'print' }] })
+        expect(tokenizeMediaConditional('all')).toStrictEqual({ segments: [{ type: 'all' }] })
     })
 
-    test('tokenizeConditional: Media Type and Shorthand', () => {
-        expect(tokenizeConditional('=screen')).toStrictEqual({
+    test('tokenizeMediaConditional: Media Type and Shorthand', () => {
+        expect(tokenizeMediaConditional('=screen')).toStrictEqual({
             modifier: '=',
             segments: [{ type: 'screen' }],
         })
-        expect(tokenizeConditional('!print')).toStrictEqual({
+        expect(tokenizeMediaConditional('!print')).toStrictEqual({
             modifier: '!',
             segments: [{ type: 'print' }],
         })
     })
 
-    test('tokenizeConditional: Media Type and Shorthand', () => {
-        expect(tokenizeConditional('screen & hover')).toStrictEqual({
+    test('tokenizeMediaConditional: Media Type and Shorthand', () => {
+        expect(tokenizeMediaConditional('screen & hover')).toStrictEqual({
             segments: [{ type: 'screen' }, { property: 'hover', operator: ':', value: 'hover' }],
         })
-        expect(tokenizeConditional('print and dark')).toStrictEqual({
+        expect(tokenizeMediaConditional('print and dark')).toStrictEqual({
             segments: [
                 { type: 'print' },
                 { property: 'prefers-color-scheme', operator: ':', value: 'dark' },
             ],
         })
-        expect(tokenizeConditional('all & > 400px')).toStrictEqual({
+        expect(tokenizeMediaConditional('all & > 400px')).toStrictEqual({
             segments: [{ type: 'all' }, { property: 'width', operator: '>', value: '400px' }],
         })
 
-        expect(tokenizeConditional('all&>400px')).toStrictEqual({
+        expect(tokenizeMediaConditional('all&>400px')).toStrictEqual({
             segments: [{ type: 'all' }, { property: 'width', operator: '>', value: '400px' }],
         })
     })

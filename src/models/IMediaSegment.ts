@@ -1,5 +1,11 @@
+type IMediaSegment = IMediaValueFeatureSegment | IMediaTypeSegment | IMediaValuelessFeatureSegment
+
 interface IMediaTypeSegment {
     type: string
+}
+
+const isIMediaTypeSegment = (segment: any): segment is IMediaTypeSegment => {
+    return 'type' in segment
 }
 
 interface IMediaValueFeatureSegment {
@@ -8,22 +14,16 @@ interface IMediaValueFeatureSegment {
     value: string | string[]
 }
 
-interface IMediaValuelessFeatureSegment {
-    property: string
-}
-
-type IMediaSegment = IMediaValueFeatureSegment | IMediaTypeSegment | IMediaValuelessFeatureSegment
-
-const isIMediaTypeSegment = (segment: any): segment is IMediaTypeSegment => {
-    return 'type' in segment
-}
-
 const isIMediaValueFeatureSegment = (segment: any): segment is IMediaValueFeatureSegment => {
     return 'value' in segment
 }
 
+interface IMediaValuelessFeatureSegment {
+    property: string
+}
+
 const isIMediaValuelessFeatureSegment = (
-    segment: any
+    segment: any,
 ): segment is IMediaValuelessFeatureSegment => {
     return !('type' in segment) && !('value' in segment) && 'property' in segment
 }
