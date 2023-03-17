@@ -1,4 +1,4 @@
-import { DEFAULT_MEDIA_FEATURE, SHORTHAND_KEYS, SHORTHAND_MAP } from './constants'
+import { DEFAULT_MEDIA_FEATURE, SHORTCUT_KEYS, SHORTCUT_MAP, MODIFIER_KEYS, MODIFIER_MAP } from './constants'
 
 import { IMediaQuery } from './models/IMediaQuery'
 import { IMediaConditional } from './models/IMediaConditional'
@@ -34,22 +34,27 @@ const tokenizeMediaQuery = (query: string): IMediaQuery => {
  */
 const tokenizeMediaConditional = (conditional: string): IMediaConditional => {
     const modifiers: string[] | null = conditional.match(/^!|not|=|only/g)
+    let modifier = '';
 
     if (modifiers !== null) {
         conditional = modifiers.reduce((accumulator: string, value: string): string => {
             return accumulator.replace(value, '').trim()
         }, conditional)
+
+        if(MODIFIER_KEYS.includes(modifiers[0])){
+            modifier = MODIFIER_MAP[modifiers[0]]
+        }
     }
 
-    const segments: string[] = conditional.split(/&| and /g)
+    const raw: string[] = conditional.split(/&| and /g)
 
-    const parsed: IMediaSegment[] = segments
+    const segments: IMediaSegment[] = raw
         .map((condition: string): IMediaSegment | false => tokenizeMediaSegment(condition))
         .filter((condition): condition is IMediaSegment => condition !== false)
 
     return {
-        segments: parsed,
-        ...(modifiers !== null ? { modifier: modifiers[0].trim() } : {}),
+        segments,
+        modifier
     }
 }
 
@@ -71,8 +76,8 @@ const tokenizeMediaSegment = (segment: string): false | IMediaSegment => {
     if (inputs.length === 1 && operators.length === 0) {
         const input = inputs[0]
 
-        if (SHORTHAND_KEYS.includes(input)) {
-            return SHORTHAND_MAP[input]
+        if (SHORTCUT_KEYS.includes(input)) {
+            return SHORTCUT_MAP[input]
         }
     }
 

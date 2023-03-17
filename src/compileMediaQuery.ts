@@ -2,6 +2,7 @@ import { IMediaQuery } from './models/IMediaQuery'
 import { IMediaConditional } from './models/IMediaConditional'
 import {
     IMediaSegment,
+    IMediaValueFeatureSegment,
     isIMediaTypeSegment,
     isIMediaValueFeatureSegment,
     isIMediaValuelessFeatureSegment,
@@ -36,11 +37,14 @@ const compileMediaQuery = (tokens: IMediaQuery): string => {
  * @returns The compiled conditional
  */
 const compileMediaConditional = (conditional: IMediaConditional): string => {
-    return conditional.segments.reduce(
+
+    const { segments, modifier } = conditional;
+
+    return segments.reduce(
         (accumulator: string, segment: IMediaSegment, index: number) => {
             return `${accumulator}${index !== 0 ? ' and ' : ''}${compileMediaSegment(segment)}`
         },
-        '',
+        (modifier !== '') ? `${modifier} ` : ''
     )
 }
 
@@ -52,23 +56,7 @@ const compileMediaConditional = (conditional: IMediaConditional): string => {
  */
 const compileMediaSegment = (segment: IMediaSegment): string => {
     if (isIMediaValueFeatureSegment(segment)) {
-        if (segment.operator.length === 1) {
-            const operator = segment.operator[0]
-
-            if (operator === ':') {
-                return `${segment.property}: ${segment.value}`
-            }
-
-            if (NUMERIC_FEATURES.includes(segment.property)) {
-                if (GREATER_THAN_OPERATORS.includes(operator)) {
-                    return `min-${segment.property}: ${segment.value}`
-                }
-
-                if (LESS_THAN_OPERATORS.includes(operator)) {
-                    return `max-${segment.property}: ${segment.value}`
-                }
-            }
-        }
+        return compileMediaFeature(segment);
     }
 
     if (isIMediaTypeSegment(segment)) {
@@ -76,10 +64,39 @@ const compileMediaSegment = (segment: IMediaSegment): string => {
     }
 
     if (isIMediaValuelessFeatureSegment(segment)) {
-        return segment.property
+        return `(${segment.property})`
     }
 
     return ''
+}
+
+/**
+ * Compiles features with values to a usable segment
+ *
+ * @param segment - The feature segment to compile
+ * @returns The compiled feature segment
+ */
+const compileMediaFeature = (segment: IMediaValueFeatureSegment): string => {
+
+    if (segment.operator.length === 1) {
+        const operator = segment.operator[0]
+
+        if (operator === ':') {
+            return `(${segment.property}: ${segment.value})`
+        }
+
+        if (NUMERIC_FEATURES.includes(segment.property)) {
+            if (GREATER_THAN_OPERATORS.includes(operator)) {
+                return `(min-${segment.property}: ${segment.value})`
+            }
+
+            if (LESS_THAN_OPERATORS.includes(operator)) {
+                return `(max-${segment.property}: ${segment.value})`
+            }
+        }
+    }
+
+    return '';
 }
 
 export default compileMediaQuery

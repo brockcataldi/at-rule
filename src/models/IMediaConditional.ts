@@ -1,7 +1,7 @@
 import { IMediaSegment } from './IMediaSegment'
 
 interface IMediaConditional {
-    modifier?: string
+    modifier: string
     segments: IMediaSegment[]
 }
 

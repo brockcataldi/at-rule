@@ -1,7 +1,5 @@
 import { IMediaSegment } from './models/IMediaSegment'
 
-type IMediaSegmentMap = { [key: string]: IMediaSegment }
-
 export const DEFAULT_MEDIA_FEATURE = 'width'
 
 export const NUMERIC_FEATURES: string[] = ['width', 'height', 'aspect-ratio', 'resolution']
@@ -10,7 +8,16 @@ export const GREATER_THAN_OPERATORS: string[] = ['>', '>=']
 
 export const LESS_THAN_OPERATORS: string[] = ['<', '<=']
 
-export const SHORTHAND_MAP: IMediaSegmentMap = {
+export const MODIFIER_MAP: { [key: string]: string } = {
+    '!': 'not',
+    'not': 'not',
+    '=': 'only',
+    'only': 'only'
+}
+
+export const MODIFIER_KEYS = Object.keys(MODIFIER_MAP);
+
+export const SHORTCUT_MAP: { [key: string]: IMediaSegment } = {
     print: { type: 'print' },
     screen: { type: 'screen' },
     all: { type: 'all' },
@@ -26,4 +33,4 @@ export const SHORTHAND_MAP: IMediaSegmentMap = {
     light: { property: 'prefers-color-scheme', operator: ':', value: 'light' },
 }
 
-export const SHORTHAND_KEYS = Object.keys(SHORTHAND_MAP)
+export const SHORTCUT_KEYS = Object.keys(SHORTCUT_MAP)
