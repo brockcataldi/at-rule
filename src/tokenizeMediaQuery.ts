@@ -1,4 +1,10 @@
-import { DEFAULT_MEDIA_FEATURE, SHORTCUT_KEYS, SHORTCUT_MAP, MODIFIER_KEYS, MODIFIER_MAP } from './constants'
+import {
+    DEFAULT_MEDIA_FEATURE,
+    SHORTCUT_KEYS,
+    SHORTCUT_MAP,
+    MODIFIER_KEYS,
+    MODIFIER_MAP,
+} from './constants'
 
 import { IMediaQuery } from './models/IMediaQuery'
 import { IMediaConditional } from './models/IMediaConditional'
@@ -16,7 +22,7 @@ import { IMediaSegment } from './models/IMediaSegment'
 const tokenizeMediaQuery = (query: string): IMediaQuery => {
     const conditionals: string[] = query
         .split(/,| or |\|/g)
-        .map((conditional) => conditional.trim().toLowerCase())
+        .map((conditional) => conditional.replace(/\(|\)/g, '').trim().toLowerCase())
 
     return {
         conditions: conditionals.map((condition) => tokenizeMediaConditional(condition)),
@@ -34,14 +40,14 @@ const tokenizeMediaQuery = (query: string): IMediaQuery => {
  */
 const tokenizeMediaConditional = (conditional: string): IMediaConditional => {
     const modifiers: string[] | null = conditional.match(/^!|not|=|only/g)
-    let modifier = '';
+    let modifier = ''
 
     if (modifiers !== null) {
         conditional = modifiers.reduce((accumulator: string, value: string): string => {
             return accumulator.replace(value, '').trim()
         }, conditional)
 
-        if(MODIFIER_KEYS.includes(modifiers[0])){
+        if (MODIFIER_KEYS.includes(modifiers[0])) {
             modifier = MODIFIER_MAP[modifiers[0]]
         }
     }
@@ -54,7 +60,7 @@ const tokenizeMediaConditional = (conditional: string): IMediaConditional => {
 
     return {
         segments,
-        modifier
+        modifier,
     }
 }
 

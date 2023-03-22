@@ -1,25 +1,50 @@
-type IMediaSegment = IMediaValueFeatureSegment | IMediaTypeSegment | IMediaValuelessFeatureSegment
+type IMediaSegment = IMediaFeatureSegment | IMediaTypeSegment
+
+type IMediaFeatureSegment =
+    | IMediaValuelessFeatureSegment
+    | IMediaStandardFeatureSegment
+    | IMediaCompoundFeatureSegment
 
 interface IMediaTypeSegment {
     type: string
 }
 
-const isIMediaTypeSegment = (segment: any): segment is IMediaTypeSegment => {
-    return 'type' in segment
-}
-
-interface IMediaValueFeatureSegment {
+interface IMediaCompoundFeatureSegment {
     property: string
-    operator: string | string[]
-    value: string | string[]
+    operator: string[]
+    value: string[]
 }
 
-const isIMediaValueFeatureSegment = (segment: any): segment is IMediaValueFeatureSegment => {
-    return 'value' in segment
+interface IMediaStandardFeatureSegment {
+    property: string
+    operator: string
+    value: string
 }
 
 interface IMediaValuelessFeatureSegment {
     property: string
+}
+
+const isIMediaTypeSegment = (segment: any): segment is IMediaTypeSegment => {
+    return 'type' in segment && !('property' in segment) && !('value' in segment)
+}
+
+const isIMediaStandardFeatureSegment = (segment: any): segment is IMediaStandardFeatureSegment => {
+    return (
+        'property' in segment &&
+        'value' in segment &&
+        typeof segment.property === 'string' &&
+        typeof segment.operator === 'string'
+    )
+}
+
+const isIMediaCompoundFeatureSegment = (segment: any): segment is IMediaCompoundFeatureSegment => {
+    return (
+        'property' in segment &&
+        'value' in segment &&
+        Array.isArray(segment.property) &&
+        Array.isArray(segment.operator)
+    )
 }
 
 const isIMediaValuelessFeatureSegment = (
@@ -31,8 +56,15 @@ const isIMediaValuelessFeatureSegment = (
 export type {
     IMediaSegment,
     IMediaTypeSegment,
-    IMediaValueFeatureSegment,
+    IMediaFeatureSegment,
     IMediaValuelessFeatureSegment,
+    IMediaCompoundFeatureSegment,
+    IMediaStandardFeatureSegment,
 }
 
-export { isIMediaTypeSegment, isIMediaValueFeatureSegment, isIMediaValuelessFeatureSegment }
+export {
+    isIMediaTypeSegment,
+    isIMediaValuelessFeatureSegment,
+    isIMediaStandardFeatureSegment,
+    isIMediaCompoundFeatureSegment,
+}

@@ -10,12 +10,12 @@ export const LESS_THAN_OPERATORS: string[] = ['<', '<=']
 
 export const MODIFIER_MAP: { [key: string]: string } = {
     '!': 'not',
-    'not': 'not',
+    not: 'not',
     '=': 'only',
-    'only': 'only'
+    only: 'only',
 }
 
-export const MODIFIER_KEYS = Object.keys(MODIFIER_MAP);
+export const MODIFIER_KEYS = Object.keys(MODIFIER_MAP)
 
 export const SHORTCUT_MAP: { [key: string]: IMediaSegment } = {
     print: { type: 'print' },

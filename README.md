@@ -23,7 +23,7 @@ This appends `@media` to the resultant value of `mediaQuery`
 import { media } from 'at-rule';
 
 media('width > 400px');
-// returns '@media (min-width: 400px)'
+// returns '(min-width: 400px)'
 ```
 
 ### `mq(query: string) => string` 
@@ -31,10 +31,10 @@ media('width > 400px');
 The shorthand function for `mediaQuery`
 
 ```javascript
-import { m } from 'at-rule';
+import { mq } from 'at-rule';
 
 mq('width > 400px');
-// returns '@media (min-width: 400px)'
+// returns '(min-width: 400px)'
 ```
 
 ### `m(query: string) => string` 
