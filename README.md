@@ -12,7 +12,7 @@ The main function for parsing the At Rule Query.
 import { mediaQuery } from 'at-rule';
 
 mediaQuery('width > 400px');
-// returns '@media (min-width: 400px)'
+// returns '(min-width: 400px)'
 ```
 
 ### `media(query: string) => string` 
@@ -23,7 +23,7 @@ This appends `@media` to the resultant value of `mediaQuery`
 import { media } from 'at-rule';
 
 media('width > 400px');
-// returns '(min-width: 400px)'
+// returns '@media (min-width: 400px)'
 ```
 
 ### `mq(query: string) => string` 
