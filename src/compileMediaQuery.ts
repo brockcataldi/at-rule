@@ -1,14 +1,17 @@
-import { IMediaQuery } from './models/IMediaQuery'
-import { IMediaConditional } from './models/IMediaConditional'
 import {
+    IMediaQuery,
+    IMediaConditional,
     IMediaCompoundFeatureSegment,
     IMediaSegment,
     IMediaStandardFeatureSegment,
+} from './models'
+
+import {
     isIMediaCompoundFeatureSegment,
     isIMediaStandardFeatureSegment,
     isIMediaTypeSegment,
     isIMediaValuelessFeatureSegment,
-} from './models/IMediaSegment'
+} from './utilities'
 
 import { GREATER_THAN_OPERATORS, LESS_THAN_OPERATORS, NUMERIC_FEATURES } from './constants'
 
@@ -57,14 +60,12 @@ const compileMediaConditional = (conditional: IMediaConditional): string => {
  * @returns The compiled segment
  */
 const compileMediaSegment = (segment: IMediaSegment): string => {
-
-
     if (isIMediaStandardFeatureSegment(segment)) {
         return compileProperty(segment)
     }
 
-    if( isIMediaCompoundFeatureSegment(segment)){
-        return compileCompoundProperty(segment);
+    if (isIMediaCompoundFeatureSegment(segment)) {
+        return compileCompoundProperty(segment)
     }
 
     if (isIMediaTypeSegment(segment)) {
@@ -120,11 +121,7 @@ const compileCompoundProperty = (segment: IMediaCompoundFeatureSegment): string 
  * @param segment - The feature segment to compile
  * @returns The compiled feature segment
  */
-const compileProperty = ({
-    property,
-    operator,
-    value,
-}: IMediaStandardFeatureSegment): string => {
+const compileProperty = ({ property, operator, value }: IMediaStandardFeatureSegment): string => {
     if (NUMERIC_FEATURES.includes(property)) {
         if (GREATER_THAN_OPERATORS.includes(operator)) {
             return `(min-${property}: ${value})`

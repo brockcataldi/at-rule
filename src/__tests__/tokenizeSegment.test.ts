@@ -100,7 +100,7 @@ describe('tokenizeMediaSegment', () => {
     test('tokenizeMediaSegment: Seesaw Statement', () => {
         expect(tokenizeMediaSegment('200px < width > 1000px')).toStrictEqual({
             property: 'width',
-            operator: ['<', '>'],
+            operator: ['>', '>'],
             value: ['200px', '1000px'],
         })
     })

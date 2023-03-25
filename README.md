@@ -1,6 +1,10 @@
 # At Rule
 
-A shorthand parser for @media (and @container in the future)
+A shorthand parser for @media
+
+## Install
+
+This isn't added anywhere yet
 
 ## Usage
 
@@ -52,13 +56,14 @@ m('width > 400px');
 
 ### Operators
 
-| Operator | Description                                      |
-| -------- | ------------------------------------------------ |
-| `:`      | Equals, the normal Media Query operator          |
-| `>=`     | Greater Than or Equal To, Available in CSS4      |
-| `<=`     | Less Than or Equal to, Available in CSS4         |
-| `>`      | Alias for Greater Than or Equal to               |
-| `<`      | Alias for Less Than or Equal to                  |
+| Operator | Description                        |
+| -------- | ---------------------------------- |
+| `&`      | And                                |
+| `:`      | Equals                             |
+| `>=`     | Greater than or Equal to           |
+| `<=`     | Less Than or Equal to              |
+| `>`      | Alias for Greater than or Equal to |
+| `<`      | Alias for Less than or Equal to    |
 
 ### Shortcuts
 

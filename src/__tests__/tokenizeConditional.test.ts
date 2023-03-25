@@ -24,7 +24,7 @@ describe('tokenizeMediaConditional', () => {
     })
 
     test('tokenizeMediaConditional: Media Type and Shorthand', () => {
-        expect(tokenizeMediaConditional('=screen')).toStrictEqual({
+        expect(tokenizeMediaConditional('%screen')).toStrictEqual({
             modifier: 'only',
             segments: [{ type: 'screen' }],
         })

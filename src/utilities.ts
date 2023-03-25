@@ -1,29 +1,10 @@
-type IMediaSegment = IMediaFeatureSegment | IMediaTypeSegment
-
-type IMediaFeatureSegment =
-    | IMediaValuelessFeatureSegment
-    | IMediaStandardFeatureSegment
-    | IMediaCompoundFeatureSegment
-
-interface IMediaTypeSegment {
-    type: string
-}
-
-interface IMediaCompoundFeatureSegment {
-    property: string
-    operator: string[]
-    value: string[]
-}
-
-interface IMediaStandardFeatureSegment {
-    property: string
-    operator: string
-    value: string
-}
-
-interface IMediaValuelessFeatureSegment {
-    property: string
-}
+import { GREATER_THAN_OPERATORS, LESS_THAN_OPERATORS } from './constants'
+import {
+    IMediaTypeSegment,
+    IMediaValuelessFeatureSegment,
+    IMediaCompoundFeatureSegment,
+    IMediaStandardFeatureSegment,
+} from './models'
 
 const isIMediaTypeSegment = (segment: any): segment is IMediaTypeSegment => {
     return 'type' in segment && !('property' in segment) && !('value' in segment)
@@ -42,7 +23,7 @@ const isIMediaCompoundFeatureSegment = (segment: any): segment is IMediaCompound
     return (
         'property' in segment &&
         'value' in segment &&
-        Array.isArray(segment.property) &&
+        Array.isArray(segment.value) &&
         Array.isArray(segment.operator)
     )
 }
@@ -53,13 +34,16 @@ const isIMediaValuelessFeatureSegment = (
     return !('type' in segment) && !('value' in segment) && 'property' in segment
 }
 
-export type {
-    IMediaSegment,
-    IMediaTypeSegment,
-    IMediaFeatureSegment,
-    IMediaValuelessFeatureSegment,
-    IMediaCompoundFeatureSegment,
-    IMediaStandardFeatureSegment,
+const invertOperator = (operator: string): string => {
+    if (GREATER_THAN_OPERATORS.includes(operator)) {
+        return '<'
+    }
+
+    if (LESS_THAN_OPERATORS.includes(operator)) {
+        return '>'
+    }
+
+    return ':'
 }
 
 export {
@@ -67,4 +51,5 @@ export {
     isIMediaValuelessFeatureSegment,
     isIMediaStandardFeatureSegment,
     isIMediaCompoundFeatureSegment,
+    invertOperator,
 }

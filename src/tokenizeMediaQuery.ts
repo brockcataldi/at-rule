@@ -6,9 +6,8 @@ import {
     MODIFIER_MAP,
 } from './constants'
 
-import { IMediaQuery } from './models/IMediaQuery'
-import { IMediaConditional } from './models/IMediaConditional'
-import { IMediaSegment } from './models/IMediaSegment'
+import { IMediaQuery, IMediaConditional, IMediaSegment } from './models'
+import { invertOperator } from './utilities'
 
 /**
  * The entrypoint function to tokenize the Media Query.
@@ -21,6 +20,7 @@ import { IMediaSegment } from './models/IMediaSegment'
  */
 const tokenizeMediaQuery = (query: string): IMediaQuery => {
     const conditionals: string[] = query
+        .replace('@media', '')
         .split(/,| or |\|/g)
         .map((conditional) => conditional.replace(/\(|\)/g, '').trim().toLowerCase())
 
@@ -39,7 +39,7 @@ const tokenizeMediaQuery = (query: string): IMediaQuery => {
  * @returns The tokenized conditional
  */
 const tokenizeMediaConditional = (conditional: string): IMediaConditional => {
-    const modifiers: string[] | null = conditional.match(/^!|not|=|only/g)
+    const modifiers: string[] | null = conditional.match(/^!|not|%|only/g)
     let modifier = ''
 
     if (modifiers !== null) {
@@ -85,6 +85,12 @@ const tokenizeMediaSegment = (segment: string): false | IMediaSegment => {
         if (SHORTCUT_KEYS.includes(input)) {
             return SHORTCUT_MAP[input]
         }
+
+        if (input !== '' && input !== ' ') {
+            return {
+                property: input,
+            }
+        }
     }
 
     if (inputs.length === 2 && operators.length === 1) {
@@ -97,9 +103,10 @@ const tokenizeMediaSegment = (segment: string): false | IMediaSegment => {
 
     if (inputs.length === 3 && operators.length === 2) {
         const values = [...inputs]
+
         return {
             property: values.splice(1, 1)[0],
-            operator: operators,
+            operator: [invertOperator(operators[0]), operators[1]],
             value: values,
         }
     }

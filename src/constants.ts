@@ -1,4 +1,4 @@
-import { IMediaSegment } from './models/IMediaSegment'
+import { IMediaSegment } from './models'
 
 export const DEFAULT_MEDIA_FEATURE = 'width'
 
@@ -11,7 +11,7 @@ export const LESS_THAN_OPERATORS: string[] = ['<', '<=']
 export const MODIFIER_MAP: { [key: string]: string } = {
     '!': 'not',
     not: 'not',
-    '=': 'only',
+    '%': 'only',
     only: 'only',
 }
 
